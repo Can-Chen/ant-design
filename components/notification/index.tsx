@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { AppConfigContext } from '../app/context';
 import ConfigProvider, { ConfigContext, globalConfig, warnContext } from '../config-provider';
-import { getReactRender } from '../config-provider/UnstableContext';
+import { unstableSetRender } from '../config-provider/UnstableContext';
 import type { ArgsProps, GlobalConfigProps, NotificationInstance } from './interface';
 import PurePanel from './PurePanel';
 import useNotification, { useInternalNotification } from './useNotification';
@@ -126,7 +126,7 @@ function flushNotice() {
 
     // Delay render to avoid sync issue
     act(() => {
-      const reactRender = getReactRender();
+      const reactRender = unstableSetRender();
 
       reactRender(
         <GlobalHolderWrapper
@@ -257,7 +257,6 @@ methods.forEach((type: keyof NoticeMethods) => {
 const noop = () => {};
 
 /** @internal Only Work in test env */
-// eslint-disable-next-line import/no-mutable-exports
 export let actWrapper: (wrapper: any) => void = noop;
 
 if (process.env.NODE_ENV === 'test') {
@@ -267,7 +266,6 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 /** @internal Only Work in test env */
-// eslint-disable-next-line import/no-mutable-exports
 export let actDestroy = noop;
 
 if (process.env.NODE_ENV === 'test') {
